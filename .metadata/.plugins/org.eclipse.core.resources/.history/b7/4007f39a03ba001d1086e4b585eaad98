@@ -1,0 +1,22 @@
+package test;
+
+import io.restassured.RestAssured;
+import static io.restassured.RestAssured.*;
+
+import org.testng.annotations.Test;
+
+import files.payload;
+
+public class Jira {
+	
+	@Test
+	public void getSessionId()
+	{
+		RestAssured.baseURI = "http:localhost:8080";
+		String Resp = given().log().all().header("Content-Type","application/json").
+		body(payload.loginCredentials()).
+		when().post("/rest/auth/1/session").
+		then().assertThat().statusCode(200).
+		extract().response().asString();
+	}
+}

@@ -1,0 +1,26 @@
+package Part3;
+
+import java.util.HashSet;
+import java.util.Iterator;
+
+public class hastSetDemo {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		HashSet<String> hs = new HashSet<String>();
+		hs.add("Uk");
+		hs.add("USA");
+		hs.add("INDIA");
+		hs.add("Uk");
+		hs.add("HE");
+		hs.add("SHE");
+		System.out.println(hs);
+		
+		Iterator<String> i = hs.iterator();
+		i.next();
+		System.out.println(i.next());
+
+	}
+
+}

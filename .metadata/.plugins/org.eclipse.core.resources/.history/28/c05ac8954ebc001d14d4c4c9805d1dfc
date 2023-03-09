@@ -1,0 +1,49 @@
+package tests;
+
+import io.restassured.RestAssured;
+import io.restassured.filter.session.SessionFilter;
+import io.restassured.path.json.JsonPath;
+
+import static io.restassured.RestAssured.*;
+
+import java.io.File;
+
+import files.payload;
+
+public class Jira {
+	
+	public static void  main(String[] args) {
+		
+	// get the session ID, use SessionFilter class to catch the id.
+		SessionFilter session = new SessionFilter();
+		RestAssured.baseURI = "http://localhost:8080";
+		String Resp = given().log().all().header("Content-Type","application/json").
+		body(payload.loginCredentials()).filter(session).
+		when().post("/rest/auth/1/session").
+		then().extract().response().asString();
+		System.out.println(Resp);
+		
+	// create an issue in jira	and get the issue id
+		String resp = given().log().all().header("Content-Type","application/json").
+		body(payload.createIssue()).filter(session).
+		when().post("/rest/api/2/issue").
+		then().assertThat().statusCode(201).extract().response().asString();
+		
+		JsonPath js = ReUsableMethods.rawToJson(resp);
+		String issueID = js.get("id");
+		
+	// add a comment in the issue
+		given().pathParam("issue_id", issueID).log().all().header("Content-Type","application/json").
+		body(payload.addComment()).filter(session).
+		when().post("/rest/api/2/issue/{issue_id}/comment").
+		then().assertThat().statusCode(201);
+	
+	// add an attachment to the issue using multipart()	
+		given().pathParam("issue_id", issueID).log().all().
+		header("Content-Type","multipart/form-data").										// mandatory to add attachment
+		header("X-Atlassian-Token", "no-check").    										// from JIRA documentation
+		multiPart("file", new File("jira.txt")).filter(session).
+		when().post("/rest/api/2/issue/{issue_id}/attachments").
+		then().assertThat().statusCode(200);
+	}
+}

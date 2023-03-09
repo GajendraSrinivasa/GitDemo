@@ -1,0 +1,31 @@
+package tests;
+
+import io.restassured.RestAssured;
+import io.restassured.filter.session.SessionFilter;
+
+import static io.restassured.RestAssured.*;
+
+
+import files.payload;
+
+public class Jira {
+	
+	public static void  main(String[] args) {
+	
+		SessionFilter session = new SessionFilter();
+		RestAssured.baseURI = "http://localhost:8080";
+		String Resp = given().log().all().header("Content-Type","application/json").
+		body(payload.loginCredentials()).filter(session).
+		when().post("/rest/auth/1/session").
+		then().extract().response().asString();
+		System.out.println(Resp);
+		
+		
+		given().log().all().header("Content-Type","application/json").
+		body(payload.createIssue()).filter(session).
+		when().post("/rest/api/2/issue").
+		then().assertThat().statusCode(201).extract().response().asString();
+		
+	
+	}
+}

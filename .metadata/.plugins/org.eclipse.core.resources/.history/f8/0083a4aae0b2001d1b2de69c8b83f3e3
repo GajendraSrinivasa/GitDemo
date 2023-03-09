@@ -1,0 +1,60 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import org.apache.commons.lang.ArrayUtils;
+
+public class gh {
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+	      System.out.println("Enter the n value: ");
+	      int n = sc.nextInt();
+	      int inpuArray[] = new int[n];
+	      System.out.println("Enter (n-1) numbers: ");
+	      for(int i=0; i<=n-2; i++) {
+	         inpuArray[i] = sc.nextInt();
+	      }
+		
+	}
+	
+	public static int MaxValue(int[] arr) {
+	        List array = Arrays.asList(ArrayUtils.toObject(arr));
+
+	        return Collections.max(array);
+	       
+	   }
+	
+	public static int MinValue(int[] arr) {
+    List array = Arrays.asList(ArrayUtils.toObject(arr));
+
+    return Collections.min(array);
+   
+	}
+	
+	public static int[] MissingNumbers(int min,int max, int[] arr) {
+		  
+//		ArrayList<Integer> list = new ArrayList<>(Arrays.asList(new Integer[]{5, 6, 9, 10}));
+//
+//	    int head = list.get(0);
+//	    int tail = list.get(list.size() - 1);
+
+	    int length = max - min + 1;
+	    int[] array = new int[length];
+
+	    for (int i : arr) {
+	        array[i - min] = 1;
+	    }
+
+	    ArrayList<int[]> missingNumbers = new ArrayList<int[]>();
+	    for (int i = 0; i < array.length; i++) {
+	    	int missingnumber;
+	        if (array[i] == 0) {
+	            missingnumber = i + min;
+	            missingNumbers.add(missingnumber);
+	        }
+	    }
+	}
+	
+}

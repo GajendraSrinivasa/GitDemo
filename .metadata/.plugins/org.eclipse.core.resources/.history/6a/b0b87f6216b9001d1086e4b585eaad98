@@ -1,0 +1,27 @@
+package tests;
+
+import org.testng.annotations.Test;
+
+import files.ReuseableMethods;
+import files.payload;
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+
+import static io.restassured.RestAssured.*;
+
+public class LibraryApi extends ReuseableMethods {
+
+		
+		@Test
+		public void addBook() {
+			
+			String getResponse = RestAssured.baseURI = "https://rahulshettyacademy.com";
+			given().header("Content-Type","application/json").body(payload.addbook()).
+			when().post("Library/Addbook.php").
+			then().assertThat().statusCode(200).
+			extract().response().toString();
+			
+			
+		}
+
+}
